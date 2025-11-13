@@ -5,16 +5,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="container">
-      <div id="weatherText">Loading...</div>
-      <div id="background"></div>
+    <div id="overlay">
+      <div class="weather-top">
+        <span id="icon">☁️</span>
+        <span id="temp">--°</span>
+      </div>
+      <div class="weather-text" id="weatherText">
+        Loading...
+      </div>
+      <div class="weather-sub" id="subText"></div>
     </div>
 
     <script src="script.js"></script>
     <script>
-      function __wweb2WaitMillisecondsToWidgetIsReady(currentDelayMs) {
-        return 0;
-      }
+      function __wweb2JsWidgetTitle() { return "Angry Weather"; }
+      function __wweb2WaitMillisecondsToWidgetIsReady() { return 0; }
     </script>
   </body>
 </html>
