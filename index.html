@@ -1,25 +1,37 @@
-<html>
+<html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="js-widget-title" content="Angry Weather" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <link rel="preload" as="image" href="assets/fog-day.webp">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="overlay">
-      <div class="weather-top">
-        <span id="icon">☁️</span>
-        <span id="temp">--°</span>
-      </div>
-      <div class="weather-text" id="weatherText">
-        Loading...
-      </div>
-      <div class="weather-sub" id="subText"></div>
-    </div>
+    <!-- Background image + gradient overlay -->
+    <div id="bg"></div>
+    <div id="scrim"></div>
+
+    <!-- UI -->
+    <header class="topbar">
+      <div id="wxIcon" aria-hidden="true">🌤️</div>
+      <div id="wxTemp">--°</div>
+    </header>
+
+    <main class="stack">
+      <h1 id="headline" class="headline">Loading…</h1>
+      <p id="sub" class="sub">One sec while we check the sky’s mood.</p>
+
+      <!-- small “refresh” tap target that works well in JsWidget -->
+      <a class="refresh" href="#action=refresh" onclick="event.preventDefault(); window.__refresh();">
+        ↻
+      </a>
+    </main>
 
     <script src="script.js"></script>
     <script>
-      function __wweb2JsWidgetTitle() { return "Angry Weather"; }
-      function __wweb2WaitMillisecondsToWidgetIsReady() { return 0; }
+      // JsWidget hooks
+      function __wweb2JsWidgetTitle(){ return "Angry Weather"; }
+      function __wweb2WaitMillisecondsToWidgetIsReady(){ return 0; }
     </script>
   </body>
 </html>
