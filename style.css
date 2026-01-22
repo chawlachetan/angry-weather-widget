@@ -1,100 +1,126 @@
-/* ====== base ====== */
 :root{
-  --accent:#4cc2ff;     /* will be replaced by condition */
-  --ink:#ffffff;
+  --accent:#4cc2ff;
+  --cardSize: 320px;   /* controlled by JS */
 }
 
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  color:var(--ink);
-  overflow:hidden;
-  background:#000; /* safety */
-}
+*{ box-sizing:border-box; }
+html,body{ height:100%; margin:0; font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; }
 
-/* ====== background ====== */
 #bg{
   position:fixed; inset:0;
-  background:#000 center/cover no-repeat;
-  transform:scale(1.02);         /* slight zoom for cinematic feel */
+  background:#111 center/cover no-repeat;
   filter:saturate(1.05) contrast(1.05);
 }
 #scrim{
   position:fixed; inset:0;
   background:
-     linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.65) 75%),
-     radial-gradient(120% 70% at 0% 0%, rgba(0,0,0,.45), transparent 60%);
-  pointer-events:none;
+    radial-gradient(120% 70% at 0% 0%, rgba(0,0,0,.55), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.7) 75%);
 }
 
-/* subtle animated grain (pure CSS, near-zero cost) */
-#scrim::after{
-  content:""; position:absolute; inset:-50%;
-  background-image:url("data:image/svg+xml;utf8,\
-    <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>\
-      <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 .02 0'/></feComponentTransfer></filter>\
-      <rect width='100%' height='100%' filter='url(%23n)'/>\
-    </svg>");
-  opacity:.6; mix-blend-mode:soft-light; animation:grain 6s steps(2) infinite;
+/* Centered square widget card */
+.card{
+  position:fixed;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:var(--cardSize);
+  height:var(--cardSize);
+  border-radius:28px;
+  padding:16px;
+  color:#fff;
+  background:rgba(0,0,0,.25);
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
-@keyframes grain{to{transform:translate3d(-2%,1%,0)}}
 
-/* ====== layout ====== */
-.topbar{
-  position:fixed; top:14px; left:14px;
+.toprow, .bottomrow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.wx{
   display:flex; align-items:center; gap:8px;
-  font-weight:800; letter-spacing:.3px;
-  text-shadow:0 1px 8px rgba(0,0,0,.45);
-}
-#wxIcon{font-size:1.3rem}
-#wxTemp{font-size:1.1rem; opacity:.95}
-
-.stack{
-  position:fixed; left:18px; right:18px; bottom:18px;
-  display:flex; flex-direction:column; gap:.4rem;
-}
-
-/* ====== headline typography ====== */
-.headline{
-  margin:0;
-  /* Big, responsive, chunky. Adjusts for small/medium/large widget sizes */
   font-weight:900;
-  line-height:1.05;
-  letter-spacing:-.5px;
-  font-size:clamp(22px, 7.2vw, 44px);
-  max-width: 92%;
-  text-wrap:balance;
-  text-shadow:0 2px 14px rgba(0,0,0,.45);
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+#wxIcon{ font-size:22px; }
+#wxTemp{ font-size:18px; opacity:.95; }
+
+.iconbtn{
+  text-decoration:none;
+  color:#fff;
+  font-weight:900;
+  padding:8px 10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.10);
+}
+
+.content{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:6px 2px;
+}
+
+.headline{
+  font-weight:950;
+  letter-spacing:-0.6px;
+  line-height:1.02;
+  font-size: clamp(22px, 8vw, 44px);
+  text-shadow:0 3px 16px rgba(0,0,0,.45);
 }
 .headline .hi{ color:var(--accent); }
 
-/* subline */
 .sub{
-  margin:0;
-  font-weight:600;
+  font-weight:700;
   opacity:.92;
-  letter-spacing:.2px;
-  font-size:clamp(10px, 3.6vw, 16px);
-  text-shadow:0 1px 10px rgba(0,0,0,.4);
+  font-size: clamp(11px, 3.2vw, 15px);
+  text-shadow:0 2px 12px rgba(0,0,0,.35);
 }
 
-/* refresh button */
-.refresh{
-  position:absolute; right:0; bottom:0;
-  font-size:1.1rem; text-decoration:none;
-  color:var(--ink); opacity:.8;
-  padding:.25rem .45rem; border-radius:.6rem;
-  background:rgba(0,0,0,.22);
-  box-shadow:0 1px 6px rgba(0,0,0,.35);
+.pill{
+  text-decoration:none;
+  color:#fff;
+  font-weight:800;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.12);
+  display:inline-block;
 }
-.refresh:active{transform:scale(.98); opacity:1}
+.pill.ghost{ background:rgba(0,0,0,.18); }
 
-/* keep taps from being blocked inside the widget overlay if needed */
-a,button{
-  --wweb2-overlay-btn-disabled: false;
-  --wweb2-overlay-btn-color: rgba(0,0,0,0);
-  --wweb2-overlay-btn-press-color: rgba(255,255,255,.2);
-  --wweb2-overlay-btn-corner-radius: 10px;
-  --wweb2-overlay-btn-padding: -30% -30% -30% -30%;
+/* Settings overlay */
+.settings{
+  position:fixed; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:18px;
 }
+.hidden{ display:none; }
+
+.settingsCard{
+  width:min(520px, 95vw);
+  background:rgba(0,0,0,.65);
+  color:#fff;
+  border-radius:22px;
+  padding:16px;
+  backdrop-filter: blur(10px);
+  box-shadow:0 14px 50px rgba(0,0,0,.45);
+}
+
+.settingsTitle{
+  display:flex; justify-content:space-between; align-items:center;
+  font-weight:950; font-size:18px; margin-bottom:12px;
+}
+
+.row{ margin-top:14px; }
+.label{ font-weight:900; margin-bottom:8px; }
+.hint{ opacity:.85; font-weight:650; font-size:13px; margin-top:6px; }
+.hint.small{ font-size:12px; opacity:.75; }
+
+.controls{
+  display:flex;
