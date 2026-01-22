@@ -1,37 +1,86 @@
-<html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="js-widget-title" content="Angry Weather" />
-    <meta charset="utf-8" />
-    <link rel="preload" as="image" href="assets/fog-day.webp">
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- Background image + gradient overlay -->
-    <div id="bg"></div>
-    <div id="scrim"></div>
+<!doctype html>
+<html>
+<head>
+  <meta name="js-widget-title" content="Angry Weather" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <!-- UI -->
-    <header class="topbar">
-      <div id="wxIcon" aria-hidden="true">🌤️</div>
-      <div id="wxTemp">--°</div>
-    </header>
+<body>
+  <!-- background -->
+  <div id="bg"></div>
+  <div id="scrim"></div>
 
-    <main class="stack">
-      <h1 id="headline" class="headline">Loading…</h1>
-      <p id="sub" class="sub">One sec while we check the sky’s mood.</p>
+  <!-- centered square card -->
+  <div id="card" class="card">
+    <div class="toprow">
+      <div class="wx">
+        <span id="wxIcon">⛅️</span>
+        <span id="wxTemp">--°</span>
+      </div>
 
-      <!-- small “refresh” tap target that works well in JsWidget -->
-      <a class="refresh" href="#action=refresh" onclick="event.preventDefault(); window.__refresh();">
-        ↻
-      </a>
-    </main>
+      <!-- Settings open -->
+      <a class="iconbtn" href="#action=settings" aria-label="Settings">⚙️</a>
+    </div>
 
-    <script src="script.js"></script>
-    <script>
-      // JsWidget hooks
-      function __wweb2JsWidgetTitle(){ return "Angry Weather"; }
-      function __wweb2WaitMillisecondsToWidgetIsReady(){ return 0; }
-    </script>
-  </body>
+    <div class="content">
+      <div id="headline" class="headline">Loading…</div>
+      <div id="sub" class="sub">Trying location…</div>
+    </div>
+
+    <div class="bottomrow">
+      <a class="pill" href="#action=refresh">↻ Refresh</a>
+      <a class="pill ghost" href="#action=toggleSwears">😇 / 😈</a>
+    </div>
+  </div>
+
+  <!-- settings panel (same page) -->
+  <div id="settings" class="settings hidden">
+    <div class="settingsCard">
+      <div class="settingsTitle">
+        <div>Settings</div>
+        <a class="iconbtn" href="#action=closeSettings" aria-label="Close">✕</a>
+      </div>
+
+      <div class="row">
+        <div class="label">Widget Size</div>
+        <div class="controls">
+          <a class="ctrl" href="#action=sizeDown">−</a>
+          <div id="sizeLabel" class="value">Medium</div>
+          <a class="ctrl" href="#action=sizeUp">+</a>
+        </div>
+        <div class="hint">Use −/+ (safe for widgets). Size persists.</div>
+      </div>
+
+      <div class="row">
+        <div class="label">Manual Location</div>
+        <div class="hint">Best set once in the WidgetWeb app view. Saved for the widget.</div>
+
+        <div class="form">
+          <input id="city" placeholder="City (e.g., Melbourne)" />
+          <a class="pill" href="#action=setCity">Set City</a>
+        </div>
+
+        <div class="form">
+          <input id="lat" placeholder="Latitude (e.g., -37.8136)" />
+          <input id="lon" placeholder="Longitude (e.g., 144.9631)" />
+          <a class="pill" href="#action=setLatLon">Set Lat/Lon</a>
+        </div>
+
+        <div class="hint small">If geolocation fails, widget will use the saved location.</div>
+      </div>
+
+      <div class="row">
+        <a class="pill" href="#action=closeSettings">Done</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function __wweb2JsWidgetTitle(){ return "Angry Weather"; }
+    function __wweb2WaitMillisecondsToWidgetIsReady(){ return 0; }
+  </script>
+</body>
 </html>
